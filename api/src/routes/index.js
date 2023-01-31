@@ -7,13 +7,15 @@ const axios = require('axios')
 const router = Router();
 
 const getApiInfo = async() => {
-    const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
+    //const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
+    const apiUrl = await axios.get(`https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5`)
     const apiData = await apiUrl.data
     const recipes = []
 
     await apiData.results.map(async (e) => {
 
         await recipes.push({
+            id: e.id,
             name: e.title,
             img: e.image,
             dish_types: e.dishTypes,
@@ -22,14 +24,14 @@ const getApiInfo = async() => {
             summary: e.summary,
             steps: await e.analyzedInstructions[0]?.steps.map( e => {
                 return {
-                    number: e.number,
-                    step: e.step
-                } 
+                        number: e.number,
+                        step: e.step
+                }
             }),
-
             //steps: await e.analyzedInstructions[0].steps ? await e.analyzedInstructions[0].steps.map( e => { return e.step}) : {return: "No steps"}
-        })
 
+            //(result.analyzedInstructions[0] && result.analyzedInstructions[0].steps?result.analyzedInstructions[0].steps.map(item=>item.step).join(" \n"):'')
+        })
     })
 
     return recipes
@@ -59,12 +61,13 @@ const getRecipes = async() => {
 }
 
 const getDiets = async() => {
-    const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
+    //const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
+    const apiUrl = await axios.get(`https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5`)
     apiData = apiUrl.data
     const diets = []
 
-    await apiData.results.map( e => {
-        e.diets.map(e => {
+    await apiData.results.map( async (e) => {
+        await e.diets.map(e => {
             diets.push(e)
         })
     })
@@ -94,6 +97,20 @@ router.get('/recipes', async(req, res) => {
     }
 })
 
+router.get('/recipes/:id', async (req, res) => {
+    const {id} = req.params
+    const recipes = await getRecipes()
+
+    try {
+        if(id){
+            let recipe = await recipes.filter(e => e.id == id)
+            recipe.length ? res.status(200).send(recipe) : res.status(404).send("La id ingresada no es correcta")
+        }
+    } catch (error) {
+        res.status(404).send(error)
+    }
+})
+
 router.get('/diets', async(req, res) => {
     const diets = await getDiets()
     const haveDiets = await Diet.findAll()
@@ -116,6 +133,32 @@ router.get('/diets', async(req, res) => {
     } catch (error) {
         res.status(404).send(error)
     }
+})
+
+router.post('/recipes', async(req, res) => {
+    const {name, image, health_score, summary, diet_types, steps } = req.body
+
+    const createRecipe = await Recipe.create({
+        name: name.toLowerCase(),
+        image: image,
+        health_score: health_score,
+        summary: summary,
+        steps: steps,
+        created: true
+    })
+    const recipeDiet = await Diet.findAll({
+        where: {
+            name: diet_types
+        }
+    })
+
+    try {
+        createRecipe.addDiet(recipeDiet)
+        res.status(200).send("Recete creada con exito")
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
 })
 
 module.exports = router;
