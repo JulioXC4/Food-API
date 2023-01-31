@@ -1,0 +1,19 @@
+.container{
+    background:#1C1D23;
+    height: 40px;
+    border-radius: 40px;
+    width: 500px;
+ }
+.text{
+    border: none;
+    background: none;  
+    outline: none;
+    float: left;
+    padding: 0;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    transition: 0.4s; 
+    line-height: 40px;
+    width: 240px;
+    padding-left: 10px; 
+  }
