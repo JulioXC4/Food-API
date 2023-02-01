@@ -36,6 +36,10 @@ export default function Details({name, image, idD, dish_types, diet_types, summa
                             <span className={style.healthScore}>Health Score: {e.health_score}</span>
                             <div className={style.diets}>
                             {
+                                e.created === true ? e.diets.map(d => (
+                                    <span className={style.spanContainer}>{d.name}</span>
+                                )) 
+                                :
                                 e.diet_types ? e.diet_types.map( diet => {
                                 return(
                                 <span className={style.spanContainer}>{diet}</span>)}) :<span className={style.spanContainer}>Diets not found</span>
@@ -54,6 +58,14 @@ export default function Details({name, image, idD, dish_types, diet_types, summa
                         </div>
                         <div className={style.steps}>
                             {
+                                e.created === true ? e.steps.split(",").map((s, index) => (
+
+                                <div className={style.step}>
+                                    <h3 className={style.number}>{index + 1}</h3>
+                                    <h3 className={style.stepText}>{s}</h3>
+                                </div> 
+                                ))
+                                :
                                 e.steps ? e.steps.map( s => {
                                     return(
                                         <div className={style.step}>

@@ -28,6 +28,7 @@ export default function CreateRecipe() {
     diet_types: [],
     steps: "",
   })
+  
   let [steps, setSteps] = useState({
     number: 0,
     stepInfo: "No step info",
@@ -101,18 +102,16 @@ export default function CreateRecipe() {
 
 const handleDeleteDiets = (e) =>{
 
-        setInput({
-            ...input,
-            diet_types: input.diet_types.filter( tp => tp !== e)
-        })
+    setInput({
+        ...input,
+        diet_types: input.diet_types.filter( tp => tp !== e)
+    })
     
 }
 const handleDeleteSteps = (e) =>{
-    
     setStepList(stepList.filter(step => step !== e))
     //steps.number= steps.number - 1
     setButtonDelete(click => click + 1)
-   
 }
 
 const handleSubmit = (e) => {
@@ -157,22 +156,10 @@ const onClickAdd = () => {
     input.steps = ""
 }
 
-const onClickDelete = async () => {
-    
-    if(stepList.length === 0){
-        setStepList([steps])
-    }else{
-        setStepList([...stepList, steps])
-    }
-}
-
-const onClickConsoleLog = () => {
-    console.log(stepList)
-}
-
 const onClickReset = () => {
     setStepList([])
 }
+
 const onClickSaveSteps = async () => {
     let finalSteps = ""
    await stepList.map(e => {
@@ -184,6 +171,7 @@ const onClickSaveSteps = async () => {
         steps: finalSteps
     })
 }
+
 const onClickSaveAll = () => {
     setInfo({
         name: input.name,
@@ -194,6 +182,7 @@ const onClickSaveAll = () => {
         steps: info.steps,
     })
 }
+
 //UseEffects
 useEffect(() => {
      if(stepList.length === 1){
@@ -214,19 +203,9 @@ useEffect(() => {
 }, [input])
 
 useEffect(() => {
-    if(stepList.length>1){
-
-        steps.number= stepList.length
-    }
-  }, [buttonDelete])
-
-useEffect(() => {
    dispatch(getDiets())
 }, [])
 
-const onClickDietsTypes = () => {
-    console.log(input.diet_types)
-}
   return (
     <div className={style.container}>
         <div className={style.header}>
@@ -265,24 +244,9 @@ const onClickDietsTypes = () => {
                     />
                     <p>{errors.image && errors.image}</p>
                 </div>
-                <select onChange={(e) =>handleSelect(e)}>
-                    {diets.map((e) => (
-                        <option value={e.name}>{e.name}</option>
-                    ))}
-                </select>
-                <button type='submit'>Crear Receta</button>
+                
             </form>
-                {input.diet_types.map(e => 
-                <div>
-                    <p>{e}</p>
-                    <button onClick={() => handleDeleteDiets(e)}>x</button>
-                </div>
-                )}
-               <button onClick={() => onClickDietsTypes()}>Console DIETS TYPES</button>
-        </div>
-
-        <div className={style.summary}>
-            <form onSubmit={(e) => handleSubmit(e)}>
+               
                 <div>
                     <label>Summary: </label>
                     <textarea
@@ -294,7 +258,18 @@ const onClickDietsTypes = () => {
                     />
                     <p>{errors.summary && errors.summary}</p>
                 </div>
-            </form>
+                <select onChange={(e) =>handleSelect(e)}>
+                    {diets.map((e) => (
+                        <option value={e.name}>{e.name}</option>
+                    ))}
+                </select>
+                {input.diet_types.map(e => 
+                <div>
+                    <p>{e}</p>
+                    <button onClick={() => handleDeleteDiets(e)}>x</button>
+                </div>
+                )}
+                <button type='submit'>Crear Receta</button>
         </div>
 
         <div className={style.steps}>
@@ -314,9 +289,8 @@ const onClickDietsTypes = () => {
                     }
                     <p>{errors.steps && errors.steps}</p>
                 </div>
-                <button onClick={() => onClickAdd()}>Agregar</button>
-                <button onClick={() => onClickConsoleLog()}>stepList</button>
-                <button onClick={() => onClickReset()}>Reset</button>
+                <button onClick={() => onClickAdd()}>Add Step</button>
+                <button onClick={() => onClickReset()}>Reset Steps</button>
                 <button onClick={() => onClickSaveSteps()}>Save steps</button>
                 <button onClick={() => onClickSaveAll()}>SAVE ALL</button>
             <div className={style.showSteps}>
