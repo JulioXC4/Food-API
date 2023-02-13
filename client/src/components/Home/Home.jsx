@@ -61,13 +61,8 @@ export default function Home() {
     <div className={style.container}>
       <header className={style.header}>
         <SearchBar />
-        <div>
-          <Link to = '/recipe'>
-            <button >Create Recipe</button>
-          </Link>
-        </div>
         <div className={style.filters}>
-          <select onChange={e => handleFilterDiet(e)}>
+          <select className={style.select} onChange={e => handleFilterDiet(e)}>
             <option value = "all">All</option>
             <option value = "gluten free">Gluten Free</option>
             <option value = "paleolithic">Paleolithic</option>
@@ -80,14 +75,19 @@ export default function Home() {
             <option value = "fodmap friendly">Fodmap Friendly</option>
             <option value = "ketogenic">Ketogenic</option>
           </select>
-          <select name='Name' onChange={e => handleSortName(e)}>
+          <select className={style.select} name='Name' onChange={e => handleSortName(e)}>
               <option value = "asc">A - Z</option>
               <option value = "desc">Z - A</option>
           </select>
-          <select name='Health_Points'onChange={e => handleSortHealthPoints(e)}>
+          <select className={style.select} name='Health_Points'onChange={e => handleSortHealthPoints(e)}>
             <option value = "asc">Less Points</option>
             <option value = "desc">Higher Points</option>
           </select>
+        </div>
+        <div>
+          <Link to = '/recipe'>
+            <button className={style.createButton}>Create Recipe</button>
+          </Link>
         </div>
       </header>
       <div className={style.pagination}>
@@ -97,7 +97,7 @@ export default function Home() {
       {currentRecipes?.map((e) => {
         return(
           <div >
-            <Card name={e.name} img={e.img} diet_types={e.diet_types} id={e.id} key={e.id}/>
+            <Card name={e.name} img={e.img } diet_types={e.diet_types || e.diets} id={e.id} key={e.id} created={e.created}/>
           </div>
         )
       })}

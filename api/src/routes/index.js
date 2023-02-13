@@ -7,8 +7,8 @@ const axios = require('axios')
 const router = Router();
 
 const getApiInfo = async() => {
-    //const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
-    const apiUrl = await axios.get(`https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5`)
+    const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
+    //const apiUrl = await axios.get(`https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5`)
     const apiData = await apiUrl.data
     const recipes = []
 
@@ -61,8 +61,8 @@ const getRecipes = async() => {
 }
 
 const getDiets = async() => {
-    //const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
-    const apiUrl = await axios.get(`https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5`)
+    const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
+    //const apiUrl = await axios.get(`https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5`)
     apiData = apiUrl.data
     const diets = []
 
@@ -139,7 +139,7 @@ router.post('/recipes', async(req, res) => {
     const {name, image, health_score, summary, diet_types, steps } = req.body
 
     const createRecipe = await Recipe.create({
-        name: name.toLowerCase(),
+        name: name,
         image: image,
         health_score: health_score,
         summary: summary,

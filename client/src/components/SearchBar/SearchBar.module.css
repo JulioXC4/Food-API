@@ -1,11 +1,15 @@
 .container{
     background:#1C1D23;
-    height: 40px;
-    border-radius: 40px;
-    width: 500px;
+    height: 45px;
+    border-radius: 30px;
+    width: 360px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
  }
 .text{
-    border: none;
+    /* border: none;
     background: none;  
     outline: none;
     float: left;
@@ -15,5 +19,23 @@
     transition: 0.4s; 
     line-height: 40px;
     width: 240px;
-    padding-left: 10px; 
+    padding-left: 10px;  */
+    margin-left: 20px;
+    border: none;
+    background: none;  
+    outline: none;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+  }
+  .button {
+    background: none;
+    color: aliceblue;
+    border: none;
+    border-radius: 20px;
+    height: 100%;
+    width: 30%;
+  }
+  .button:hover{
+    background-color: gray;
+    cursor: pointer;
   }
