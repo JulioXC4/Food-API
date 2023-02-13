@@ -1,5 +1,5 @@
 import {React, useEffect} from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDetails, clearDetails } from '../../actions/actions.js'
 import style from '../Details/Details.module.css'
@@ -26,6 +26,7 @@ export default function Details({name, image, idD, dish_types, diet_types, summa
                 return (
                  <div className={style.container}>
                     <header className={style.header}>
+                    <Link to='/home'><button className={style.buttonHome}>Home</button></Link>
                     </header>
                     <div className={style.image}>
                         <img src={e.img ? e.img : 'img/default.jpg'} alt='img'/>

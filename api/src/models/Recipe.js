@@ -17,6 +17,7 @@ module.exports = (sequelize) => {
     },
     image: {
       type: DataTypes.STRING,
+      defaultValue: "https://cdn-icons-png.flaticon.com/512/45/45332.png",
       allowNull: true
     },
     health_score: {

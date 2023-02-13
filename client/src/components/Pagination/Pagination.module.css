@@ -1,7 +1,27 @@
 .numbers {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    padding: 1px;
+    padding: 5px;
+    margin: 0px;
     list-style: none;
-    }
+}
+
+.button{
+    width: 35px;
+    height: 35px;
+    margin: 10px;
+    border-radius: 50%;
+    border: none;
+    color: black;
+    font-size: 20px;
+    background-color:beige;
+}
+
+.button:hover {
+    background-color: gray;
+    cursor: pointer;
+  }
+  
+.button:active {
+    background-color: rgb(200, 243, 46);
+  }

@@ -1,10 +1,10 @@
 .container{
+    position: absolute;
     width: 100%;
     height: 100%;
-    position: absolute;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 6fr;
+    grid-template-rows: 1fr 8fr;
     gap: 0px 0px;
     grid-template-areas: 
     "header header"
@@ -14,24 +14,208 @@
 
 .header{
     grid-area: header;
-    background-color: blue;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    padding: 0px;
+    background-color: rgb(231, 147, 51);
+}
+.header .title{
+    font-size: 35px;
+    font-family: Arial, sans-serif;
+    color: aliceblue;
+}
+.header button{
+    width: 130px;
+    height: 50px;
+    background-color: rgb(66, 66, 65);
+    border-radius: 30px;
+    margin-left: 30px;
+    font-size: 20px;
+    color: rgb(238, 225, 220);
+    border: none;
+    font-family: Arial, sans-serif;
 }
 .stats{
     grid-area: stats;
-    background-color: antiquewhite;
+    height: 100%;
+}
+.stats .statsContainer{
+    background-color: #333;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.stats .labelContainer{
+    height: 120px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center; 
+}
+.labelContainer .labelInput{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.labelName{
+    background-color: rgb(134, 134, 146);
+    padding: 7px;
+    font-size: 16px;
+    border-radius: 30px;
+    color: #333;
+}
+.input{
+    width: 450px;
+    height: 20px;
+    padding: 7px;
+    font-size: 16px;
+    border-radius: 30px;
+}
+.spanError{
+    margin-top: 0px;
+    padding: 5px;
+    border-radius: 30px;
+    color: white;
+    background-color: rgb(219, 81, 81);
 }
 .summary{
     grid-area: summary;
     background-color: aquamarine;
 }
 .textbox{
-    width: 500px;
-    height: 110px;
+    width: 550px;
+    height: 80px;
     padding: 10px;
     border: 1px solid #ccc;
     font-size: 18px;
 }
+.dietsContainer{
+    background-color: #333;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.dietsContainer .diets{
+    display: flex;
+    flex-direction: row;
+}
+.diet {
+    margin: 10px;
+}
+.spanDiet{
+    background-color: azure;
+    margin: 0px;
+    padding: 7px;
+    border-radius: 30px;
+}
+.buttonClose{
+    background-color: red;
+    margin: 0px;
+    padding: 7px;
+    border-radius: 30px;
+}
+.buttonsSaveCreate{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.buttons{
+    margin: 10px;
+    width: 150px;
+    height: 40px;
+    border: none;
+    border-radius: 30px;
+}
+.buttons:hover{
+    cursor: pointer;
+}
 .steps{
     grid-area: steps;
-    background-color: cadetblue;
+    height: 100%;
 }
+.steps .stepsContainer{
+    height: 50%;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:center;
+    background-color: #333;
+}
+.stepsContainer .stepsName{
+    color: white;
+}
+.stepsContainer .inputContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.stepsContainer .buttonsContainer{
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.inputContainer .inputSteps{
+    width: 600px;
+    height: 150px;
+    padding: 10px;
+    margin: 15px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+}
+
+.steps .showSteps{
+    height: 40%;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+}
+
+.showSteps .stepListContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.step{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: antiquewhite;
+    border-radius: 30px;
+    padding: 9px;
+    margin: 5px;
+}
+.step .spanStep{
+   color: red;
+}
+.stepName2{
+    color: whitesmoke;
+}
+.step .buttonCloseStep{
+    background-color: red;
+}
+

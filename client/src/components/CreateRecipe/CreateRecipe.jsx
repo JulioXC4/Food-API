@@ -36,19 +36,18 @@ export default function CreateRecipe() {
 
   const [stepList, setStepList] = useState([])
   let [button, setButton] = useState(0)
-  let [buttonDelete, setButtonDelete] = useState(0)
   const [errors, setErrors] = useState({})
 
   const validate = (input) => {
     let errors = {}
 
-        if(!input.name) errors.name = "Se requiere un nombre"
-        if(input.name.length < 8) errors.name = "El nombre debe ser más largo"
-        if(!input.health_score ) errors.health_score ="Se requiere health score"
-        if(input.health_score > 100) errors.health_score ="El puntaje no puede ser mayor a 100"
-        if(input.summary.length < 20) errors.summary = "El resumen debe ser más largo"
-        if(input.image.length < 8) errors.image = "Introduce un URL valido"
-        if(input.steps.length < 2) errors.steps = "La receta debe tener 2 pasos como minimo"
+        if(!input.name) errors.name = "A name is needed"
+        if(input.name.length < 8) errors.name = "The name must be longer"
+        if(!input.health_score ) errors.health_score ="A score is needed"
+        if(input.health_score > 100) errors.health_score ="The score cannot be greater than 100"
+        if(input.summary.length < 20) errors.summary = "The summary must have more than 20 letters"
+        if(input.image.length < 8) errors.image = "Enter a valid url"
+        if(stepList.length < 2) errors.steps = "The recipe needs 2 steps at least"
 
         return errors
   }
@@ -75,20 +74,26 @@ export default function CreateRecipe() {
   
   }
 
-  const handleSelect = (event) => {
+const handleSelect = (event) => {
     event.preventDefault()
-    if(input.diet_types.length < 2){
-        if(input.diet_types.length === 1){
+
+    if(input.diet_types.length < 5){
+        if(input.diet_types.length >= 1){
             input.diet_types.map(e => {
+
                 if(event.target.value === e){
-                   return alert("No pueden ser del mismo tipo")
+                   alert("No pueden ser del mismo tipo")
+                   return false;
                 }else{
-                    setInput({
-                        ...input,
-                        diet_types: [...input.diet_types, event.target.value]
-                    })
+                    return true;
                 }
             })
+            if (!input.diet_types.includes(event.target.value)) {
+                setInput({
+                    ...input,
+                    diet_types: [...input.diet_types, event.target.value]
+                })
+            }
         }else{
             setInput({
                 ...input,
@@ -96,29 +101,27 @@ export default function CreateRecipe() {
             })
         }
     }else{
-        return alert("2 tipos como maximo")
+        return alert("5 tipos como maximo")
     }
+
 }
 
 const handleDeleteDiets = (e) =>{
-
     setInput({
         ...input,
-        diet_types: input.diet_types.filter( tp => tp !== e)
-    })
-    
+        diet_types: input.diet_types.filter( diet => diet !== e)
+    })  
 }
 const handleDeleteSteps = (e) =>{
     setStepList(stepList.filter(step => step !== e))
     //steps.number= steps.number - 1
-    setButtonDelete(click => click + 1)
 }
 
-const handleSubmit = (e) => {
+const handleSubmit = async(e) => {
     e.preventDefault()
-
     if(!Object.keys(errors).length){
-        dispatch(postRecipe(info))
+        await dispatch(postRecipe(info))
+
         setInput({
           name: "",
           image: "",
@@ -142,7 +145,7 @@ const handleSubmit = (e) => {
         alert("Llena bien el formulario")
     }
   }
-  
+
 //OnCliks
 const onClickAdd = () => {
 
@@ -168,19 +171,29 @@ const onClickSaveSteps = async () => {
 
     setInfo({
         ...info,
-        steps: finalSteps
+        steps: finalSteps.slice(0, -1)
     })
+    alert("Pasos guardados")
 }
 
 const onClickSaveAll = () => {
-    setInfo({
-        name: input.name,
-        image: input.image,
-        health_score: input.health_score,
-        summary: input.summary,
-        diet_types: input.diet_types,
-        steps: info.steps,
-    })
+    if(!Object.keys(errors).length){
+
+        setInfo({
+            name: input.name,
+            image: input.image,
+            health_score: input.health_score,
+            summary: input.summary,
+            diet_types: input.diet_types,
+            steps: info.steps,
+        })
+
+        alert("Cambios guardados")
+    }else{
+        return alert("rellan bn")
+    }
+
+
 }
 
 //UseEffects
@@ -198,125 +211,131 @@ useEffect(() => {
     
   }, [button])
 
+    useEffect(() => {
+     dispatch(getDiets())
+    }, [])
+
 useEffect(() => {
   setErrors(validate(input))
 }, [input])
 
-useEffect(() => {
-   dispatch(getDiets())
-}, [])
-
   return (
     <div className={style.container}>
         <div className={style.header}>
-            <Link to='/home'><button>Volver</button></Link>
-            <h1>Crea tu receta</h1>
+            <Link to='/home'><button>Home</button></Link>
+            <h1 className={style.title}>Create your recipe!</h1>
+            <span></span>
         </div>
         <div className={style.stats}>
-            <form onSubmit={(e) => handleSubmit(e)}>
-                <div>
-                    <label>Nombre de la receta: </label>
-                    <input
-                    type='text'
-                    value={input.name}
-                    name="name"
-                    onChange={handleChange}
-                    />
-                    <p>{errors.name && errors.name}</p>
+            <form className={style.form} onSubmit={(e) => handleSubmit(e)}>
+                <div className={style.statsContainer}>
+                    <div className={style.labelContainer}>
+                        <div className={style.labelInput}>
+                            <label className={style.labelName}>Recipe name</label>
+                            <input
+                            type='text'
+                            value={input.name}
+                            name="name"
+                            onChange={handleChange}
+                            className={style.input}
+                            />
+                        </div>
+                        <span className={style.spanError}>{errors.name && errors.name}</span>
+                    </div>
+                    <div className={style.labelContainer}>
+                        <div className={style.labelInput}>
+                            <label className={style.labelName}>Score</label>
+                            <input
+                            type='number'
+                            value={input.health_score}
+                            name="health_score"
+                            onChange={handleChange}
+                            className={style.input}
+                            />
+                        </div>
+                        <span className={style.spanError}>{errors.health_score && errors.health_score}</span>
+                    </div>
+                    <div className={style.labelContainer}>
+                        <div className={style.labelInput}>
+                        <label className={style.labelName}>URL Image</label>
+                        <input
+                        type='text'
+                        value={input.image}
+                        name="image"
+                        onChange={handleChange}
+                        className={style.input}
+                        />
+                        </div>
+                        <span className={style.spanError}>{errors.image && errors.image}</span>
+                    </div>
+                    <div className={style.labelContainer}>
+                        <div className={style.labelInput}>
+                            <textarea
+                             type='text'
+                             value={input.summary}
+                             name="summary"
+                             onChange={handleChange}
+                             placeholder="Write here the summary of your recipe"
+                             className={style.textbox}
+                            />
+                        </div>
+                        <span className={style.spanError}>{errors.summary && errors.summary}</span>
+                    </div>
                 </div>
-                <div>
-                    <label>Puntaje: </label>
-                    <input
-                    type='number'
-                    value={input.health_score}
-                    name="health_score"
-                    onChange={handleChange}
-                    />
-                     <p>{errors.health_score && errors.health_score}</p>
+                <div className={style.dietsContainer}>
+                    <select className={style.select} onChange={(e) =>handleSelect(e)}>
+                        {diets.map((e) => (
+                            <option value={e.name}>{e.name}</option>
+                        ))}
+                    </select>
+                    <div className={style.diets}>
+                    {input.diet_types.map(e => 
+                        <div className={style.diet}>
+                            <span className={style.spanDiet}>{e}</span>
+                            <button className={style.buttonClose} onClick={() => handleDeleteDiets(e)}>x</button>
+                        </div>
+                    )}
+                    </div>
                 </div>
-                <div>
-                    <label>URL Image: </label>
-                    <input
-                    type='text'
-                    value={input.image}
-                    name="image"
-                    onChange={handleChange}
-                    />
-                    <p>{errors.image && errors.image}</p>
-                </div>
-                
+                    <div className={style.buttonsSaveCreate}>
+                        <button className={style.buttons} onClick={() => onClickSaveAll()}>SAVE ALL</button>
+                        <button className={style.buttons} type='submit'>Create Recipe!</button>
+                    </div>
             </form>
-               
-                <div>
-                    <label>Summary: </label>
-                    <textarea
-                     type='text'
-                     value={input.summary}
-                     name="summary"
-                     onChange={handleChange}
-                     className={style.textbox}
-                    />
-                    <p>{errors.summary && errors.summary}</p>
-                </div>
-                <select onChange={(e) =>handleSelect(e)}>
-                    {diets.map((e) => (
-                        <option value={e.name}>{e.name}</option>
-                    ))}
-                </select>
-                {input.diet_types.map(e => 
-                <div>
-                    <p>{e}</p>
-                    <button onClick={() => handleDeleteDiets(e)}>x</button>
-                </div>
-                )}
-                <button type='submit'>Crear Receta</button>
         </div>
-
         <div className={style.steps}>
-            <p>Introduzca los pasos para su receta: </p>
-                <div>
-                    <label>Steps: </label>
+            <div className={style.stepsContainer}>
+                <h2 className={style.stepsName}>Enter the recipe steps:</h2>
+                <div className={style.inputContainer}>
                     <textarea
                     type='text'
                     value={input.steps}
                     name="steps"
                     //onInput={handleChangeSteps}
                     onChange={handleChangeSteps}
-                    className={style.textbox}
+                    placeholder="Remember to save the steps when you finish..."
+                    className={style.inputSteps}
                     />
-                    {
-                        <span>{info.steps}</span>
-                    }
-                    <p>{errors.steps && errors.steps}</p>
+                    <span className={style.spanError}>{errors.steps && errors.steps}</span>
                 </div>
-                <button onClick={() => onClickAdd()}>Add Step</button>
-                <button onClick={() => onClickReset()}>Reset Steps</button>
-                <button onClick={() => onClickSaveSteps()}>Save steps</button>
-                <button onClick={() => onClickSaveAll()}>SAVE ALL</button>
+                <div className={style.buttonsContainer}>
+                    <button onClick={() => onClickAdd()}>Add Step</button>
+                    <button onClick={() => onClickReset()}>Reset Steps</button>
+                    <button onClick={() => onClickSaveSteps()}>Save steps</button>
+                </div>
+            </div>  
             <div className={style.showSteps}>
-
-              {/* {stepList.length ? stepList.map(e => 
-                <div>
-                    <p>{e.number} {e.stepInfo}</p>
-                    <h3>{stepList.length}</h3>
+                <h2 className={style.stepName2}>Step List</h2>
+                <div className={style.stepListContainer}>
+                {stepList.length > 1 ? stepList.map((e, index) => 
+                    <div className={style.step}>
+                        <span className={style.spanStep}>{index+1} {e.stepInfo}</span>
+                        <button className={style.buttonCloseStep} onClick={() => handleDeleteSteps(e)}>x</button>
+                    </div>
+                ): <span> There are no steps in the list </span>} 
                 </div>
-                ): <span>No step list {stepList.length}</span>} */}
-                  {
-                    <span>{steps.number} {steps.stepInfo} </span>
-                  }
-
-                  {
-                    <span> ||| Step list length :{stepList.length}</span>
-                  }
-                    {stepList.length ? stepList.map(e => 
-                <div>
-                    <span>{e.number} {e.stepInfo}</span>
-                    <button onClick={() => handleDeleteSteps(e)}>x</button>
-                </div>
-                ): <span> ||| No step list {stepList.length}</span>} 
-                   
             </div>
         </div>
-        </div>
+    </div>
   )
 }

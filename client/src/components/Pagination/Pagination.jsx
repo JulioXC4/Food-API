@@ -15,7 +15,7 @@ export default function Pagination({recipesPerPage, allRecipes, pagination}) {
         {
           pageNumbers && pageNumbers.map(number => (
             <li>
-              <button onClick={() => pagination(number)}>{number}</button>
+              <button className={style.button} onClick={() => pagination(number)}>{number}</button>
             </li>
           ))
         }
